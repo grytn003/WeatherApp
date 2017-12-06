@@ -12,9 +12,9 @@ namespace WeatherApp.ViewModels
 {
     public class MainPageViewModel : BindableBase, INavigationAware
     {
-        public DelegateCommand GetWeatherForLocationCommand { get; set; }
-		public DelegateCommand<WeatherItem> NavToMoreInfoPageCommand { get; set; }
-        public DelegateCommand<WeatherItem> DeleteItemCellCommand { get; set; }
+        INavigationService _navigationService;
+
+        public DelegateCommand NavToCheckCitiesPageCommand { get; set; }
 
         private string _buttonText;
         public string ButtonText
@@ -30,61 +30,19 @@ namespace WeatherApp.ViewModels
             set { SetProperty(ref _title, value); }
         }
 
-        private string _locationEnteredByUser;
-        public string LocationEnteredByUser
-        {
-            get { return _locationEnteredByUser; }
-            set { SetProperty(ref _locationEnteredByUser, value); }
-        }
-
-        private ObservableCollection<WeatherItem> _weatherCollection = new ObservableCollection<WeatherItem>();
-        public ObservableCollection<WeatherItem> WeatherCollection
-        {
-            get { return _weatherCollection; }
-            set { SetProperty(ref _weatherCollection, value); }
-        }
-
-        INavigationService _navigationService;
-
         public MainPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
 
-            GetWeatherForLocationCommand = new DelegateCommand(GetWeatherForLocation);
-            NavToMoreInfoPageCommand = new DelegateCommand<WeatherItem>(NavToMoreInfoPage);
-            DeleteItemCellCommand = new DelegateCommand<WeatherItem>(DeleteItemCell);
+            NavToCheckCitiesPageCommand = new DelegateCommand(NavToCheckCitiesPage);
 
-            Title = "Xamarin Forms Application + Prism";
+            Title = "Weather Application with Prism";
             ButtonText = "Add Name";
         }
 
-        private async void NavToMoreInfoPage(WeatherItem weatherItem)
+        private async void NavToCheckCitiesPage()
         {
-            var navParams = new NavigationParameters();
-            navParams.Add("WeatherItemInfo", weatherItem);
-            await _navigationService.NavigateAsync("MoreInfoPage", navParams);
-        }
-
-        private void DeleteItemCell(WeatherItem weatherItem)
-        {
-            WeatherCollection.Remove(weatherItem);
-        }
-
-        internal async void GetWeatherForLocation()
-        {
-            HttpClient client = new HttpClient();
-            var uri = new Uri(
-                string.Format(
-                    $"http://api.openweathermap.org/data/2.5/weather?q={LocationEnteredByUser}&units=imperial&APPID=" +
-                    $"{ApiKey.WeatherAPIKey}"));
-            var response = await client.GetAsync(uri);
-            WeatherItem weatherData = null;
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                weatherData = WeatherItem.FromJson(content);
-            }
-            WeatherCollection.Add(weatherData);
+            await _navigationService.NavigateAsync("CheckCitiesPage");
         }
 
         public void OnNavigatedFrom(NavigationParameters parameters)
