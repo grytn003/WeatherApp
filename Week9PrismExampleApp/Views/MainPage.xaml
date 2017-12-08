@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="WeatherApp.Views.MainPage"
              Title="MainPage">
     <ContentPage.Content>
@@ -13,8 +15,15 @@
             </Label>
             <Button VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand"
+                BorderColor="Navy"
+                BorderWidth="2"
+                BorderRadius="10"
                 Text="Search for weather at specific locations"  
                 Command="{Binding NavToCheckCitiesPageCommand}" />
+            <Button VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand"
+                Text="Navigate to Maps Page"  
+                Command="{Binding NavToMapsPageCommand}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -15,13 +15,7 @@ namespace WeatherApp.ViewModels
         INavigationService _navigationService;
 
         public DelegateCommand NavToCheckCitiesPageCommand { get; set; }
-
-        private string _buttonText;
-        public string ButtonText
-        {
-            get { return _buttonText; }
-            set { SetProperty(ref _buttonText, value); }
-        }
+        public DelegateCommand NavToMapsPageCommand { get; set; }
 
         private string _title;
         public string Title
@@ -35,14 +29,19 @@ namespace WeatherApp.ViewModels
             _navigationService = navigationService;
 
             NavToCheckCitiesPageCommand = new DelegateCommand(NavToCheckCitiesPage);
+            NavToMapsPageCommand = new DelegateCommand(NavToMapsPage);
 
             Title = "Weather Application with Prism";
-            ButtonText = "Add Name";
         }
 
         private async void NavToCheckCitiesPage()
         {
             await _navigationService.NavigateAsync("CheckCitiesPage");
+        }
+
+        private async void NavToMapsPage()
+        {
+            await _navigationService.NavigateAsync("MapsPage");
         }
 
         public void OnNavigatedFrom(NavigationParameters parameters)

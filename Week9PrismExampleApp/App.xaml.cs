@@ -25,7 +25,8 @@ namespace WeatherApp
             Container.RegisterTypeForNavigation<MainPage>();
             Container.RegisterTypeForNavigation<MoreInfoPage>();
             Container.RegisterTypeForNavigation<CheckCitiesPage>();
-		}
+            Container.RegisterTypeForNavigation<MapsPage>();
+        }
     }
 }
 
